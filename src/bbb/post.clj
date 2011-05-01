@@ -6,13 +6,13 @@
 (defstruct post :title :permalink :body :year :month :day :layout)
 
 (def post-defaults
-  {:title ""
+  {:title     ""
    :permalink ""
-   :body ""
-   :year 1969
-   :month 12
-   :day 31
-   :layout ""})
+   :body      ""
+   :year      1969
+   :month     12
+   :day       31
+   :layout    ""})
 
 (defn to-md [text]
   (.markdown (MarkdownProcessor.) text))
@@ -36,6 +36,5 @@
 
 (defn parse-posts []
   (let [files (get-files)]
-    (prn files)
-    (prn (map #(parse-post %) files))))
+    (map #(parse-post %) files)))
 
