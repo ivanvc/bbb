@@ -1,7 +1,8 @@
 (ns bbb.post
   (:import java.io.File
            [com.petebevin.markdown MarkdownProcessor])
-  (:require [clj-yaml.core :as yaml]))
+  (:require [clj-yaml.core :as yaml]
+            [clojure.string :as str]))
 
 (defstruct post :title :permalink :body :year :month :day :layout)
 
@@ -17,8 +18,13 @@
 (defn to-md [text]
   (.markdown (MarkdownProcessor.) text))
 
-(defn create-post [attributes]
-  (merge post-defaults attributes))
+(defn create-post [attrs]
+  (merge post-defaults attrs
+         {:title (str/replace (:title attrs) \- \ )
+          :permalink (str "/" (:year attrs)
+                          "/" (:month attrs)
+                          "/" (:day attrs)
+                          "/" (:title attrs) ".html")}))
 
 (defn- get-files []
   (let [dir (File. "posts")
